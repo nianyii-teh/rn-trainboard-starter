@@ -26,6 +26,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => (
     >
       Go to Station Select
     </Button>
+    <Button mode="contained" onPress={() => navigation.navigate('FareResults')}>
+      Get fares
+    </Button>
   </View>
 );
 

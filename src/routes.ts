@@ -10,4 +10,5 @@ export type RootStackParamList = {
   Home: undefined;
   Details: undefined;
   StationSelect: undefined;
+  FareResults: undefined;
 };

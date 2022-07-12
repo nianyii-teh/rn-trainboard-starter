@@ -8,6 +8,7 @@ import { RootStackParamList } from './src/routes';
 import StationSelectScreen from './src/screens/stationSelect';
 import DetailsScreen from './src/screens/details';
 import HomeScreen from './src/screens/home';
+import FareResultsScreen from './src/screens/fareResults';
 import 'react-native-gesture-handler';
 import { config } from './src/config';
 
@@ -21,6 +22,7 @@ enum Routes {
   HOME = 'Home',
   DETAILS = 'Details',
   STATION_SELECT = 'StationSelect',
+  FARERESULTS = 'FareResults',
 }
 
 const App: React.FC = () => (
@@ -38,6 +40,7 @@ const App: React.FC = () => (
           name={Routes.STATION_SELECT}
           component={StationSelectScreen}
         />
+        <Stack.Screen name={Routes.FARERESULTS} component={FareResultsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   </PaperProvider>
