@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';

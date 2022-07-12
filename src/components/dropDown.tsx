@@ -1,13 +1,5 @@
-import {
-  Appbar,
-  DarkTheme,
-  DefaultTheme,
-  Provider,
-  Surface,
-  ThemeProvider,
-} from 'react-native-paper';
 import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
 import { DropdownProps } from '../dropDownTypes';
 
@@ -39,9 +31,7 @@ const DropDownComponent: React.FC<DropdownProps> = ({
   value,
   setValue,
 }) => {
-  const [nightMode, setNightmode] = useState(false);
   const [showDropDown, setShowDropDown] = useState(false);
-  const [dropdown, setDropdown] = useState('');
 
   return (
     <View style={styles.container}>
