@@ -5,6 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import TopBar from './src/components/topBar';
 import theme from './src/theme';
 import { RootStackParamList } from './src/routes';
+import StationSelectScreen from './src/screens/stationSelect';
 import DetailsScreen from './src/screens/details';
 import HomeScreen from './src/screens/home';
 import 'react-native-gesture-handler';
@@ -19,6 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 enum Routes {
   HOME = 'Home',
   DETAILS = 'Details',
+  STATION_SELECT = 'StationSelect',
 }
 
 const App: React.FC = () => (
@@ -32,6 +34,10 @@ const App: React.FC = () => (
       >
         <Stack.Screen name={Routes.HOME} component={HomeScreen} />
         <Stack.Screen name={Routes.DETAILS} component={DetailsScreen} />
+        <Stack.Screen
+          name={Routes.STATION_SELECT}
+          component={StationSelectScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   </PaperProvider>
