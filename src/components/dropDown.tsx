@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import DropDown from 'react-native-paper-dropdown';
-import { DropdownProps } from '../dropDownTypes';
+import { DropdownItem } from '../model/dropDownItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
     minWidth: '70%',
   },
 });
+
+type DropdownProps = {
+  items: DropdownItem[];
+  label: string;
+  value: string | null;
+  setValue: React.Dispatch<React.SetStateAction<string | null>>;
+};
 
 const DropDownComponent: React.FC<DropdownProps> = ({
   items,

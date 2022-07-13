@@ -20,7 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 enum Routes {
   HOME = 'Home',
   DETAILS = 'Details',
-  STATIONSELECT = 'StationSelect',
+  STATION_SELECT = 'StationSelect',
 }
 
 const App: React.FC = () => (
@@ -35,7 +35,7 @@ const App: React.FC = () => (
         <Stack.Screen name={Routes.HOME} component={HomeScreen} />
         <Stack.Screen name={Routes.DETAILS} component={DetailsScreen} />
         <Stack.Screen
-          name={Routes.STATIONSELECT}
+          name={Routes.STATION_SELECT}
           component={StationSelectScreen}
         />
       </Stack.Navigator>

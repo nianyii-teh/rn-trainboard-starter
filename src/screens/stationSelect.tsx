@@ -4,7 +4,7 @@ import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
 import { DropdownItem } from '../dropDownTypes';
-import { urlOpenerFunc } from '../helpers/urlOpener';
+import { openUrlInBrowser } from '../helpers/urlOpener';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   dropdown: {
-    margin: -10,
+    margin: 5,
   },
   text: {
     paddingBottom: 24,
@@ -28,59 +28,64 @@ const styles = StyleSheet.create({
 
 type StationSelectProps = ScreenNavigationProps<'StationSelect'>;
 
-const stList: DropdownItem[] = [
+const stationList: Array<DropdownItem> = [
   {
-    label: 'Kings Cross',
-    value: 'KGX',
+    name: 'Kings Cross',
+    code: 'KGX',
   },
   {
-    label: 'Euston',
-    value: 'EUS',
+    name: 'Euston',
+    code: 'EUS',
   },
   {
-    label: 'Canley',
-    value: 'CNL',
+    name: 'Canley',
+    code: 'CNL',
   },
   {
-    label: 'Newcastle',
-    value: 'NCL',
+    name: 'Newcastle',
+    code: 'NCL',
   },
   {
-    label: 'Orpington',
-    value: 'ORP',
+    name: 'Orpington',
+    code: 'ORP',
   },
 ];
 
-const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
-  const [departStation, setDepartStation] = useState('');
-  const [arriveStation, setArriveStation] = useState('');
+const StationSelectScreen: React.FC<StationSelectProps> = () => {
+  const [departStation, setDepartStation] = useState<string | null>(null);
+  const [arriveStation, setArriveStation] = useState<string | null>(null);
+
+  const stationSelectionIsValid = (
+    departStation: string | null,
+    arriveStation: string | null,
+  ): boolean => {
+    return (
+      departStation !== null &&
+      arriveStation !== null &&
+      departStation !== arriveStation
+    );
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Stations</Text>
       <DropDownComponent
-        items={stList}
-        label={'Departure Station'}
+        items={stationList}
+        label="Departure Station"
         value={departStation}
         setValue={setDepartStation}
       />
       <DropDownComponent
-        items={stList}
-        label={'Arrival Station'}
+        items={stationList}
+        label="Arrival Station"
         value={arriveStation}
         setValue={setArriveStation}
       />
       <Button
         mode="contained"
         onPress={() => {
-          if (
-            departStation &&
-            arriveStation &&
-            departStation != arriveStation
-          ) {
-            urlOpenerFunc(
-              `https://www.lner.co.uk/travel-information/travelling-now/live-train-times/depart/${departStation}/${arriveStation}/#LiveDepResults`,
-            );
+          if (stationSelectionIsValid(departStation, arriveStation)) {
+            openUrlInBrowser(departStation, arriveStation);
           }
         }}
       >
