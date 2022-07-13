@@ -30,28 +30,28 @@ type StationSelectProps = ScreenNavigationProps<'StationSelect'>;
 
 const stationList: Array<DropdownItem> = [
   {
-    name: 'Kings Cross',
-    code: 'KGX',
+    label: 'Kings Cross',
+    value: 'KGX',
   },
   {
-    name: 'Euston',
-    code: 'EUS',
+    label: 'Euston',
+    value: 'EUS',
   },
   {
-    name: 'Canley',
-    code: 'CNL',
+    label: 'Canley',
+    value: 'CNL',
   },
   {
-    name: 'Newcastle',
-    code: 'NCL',
+    label: 'Newcastle',
+    value: 'NCL',
   },
   {
-    name: 'Orpington',
-    code: 'ORP',
+    label: 'Orpington',
+    value: 'ORP',
   },
 ];
 
-const StationSelectScreen: React.FC<StationSelectProps> = () => {
+const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   const [departStation, setDepartStation] = useState<string | null>(null);
   const [arriveStation, setArriveStation] = useState<string | null>(null);
 
@@ -85,7 +85,11 @@ const StationSelectScreen: React.FC<StationSelectProps> = () => {
         mode="contained"
         onPress={() => {
           if (stationSelectionIsValid(departStation, arriveStation)) {
-            openUrlInBrowser(departStation, arriveStation);
+            // openUrlInBrowser(departStation, arriveStation);
+            navigation.navigate('FareResults', {
+              departStation: departStation,
+              arriveStation: arriveStation,
+            });
           }
         }}
       >
