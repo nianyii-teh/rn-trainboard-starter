@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native';
 import { ScreenNavigationProps } from '../routes';
 import { config } from '../config';
 
@@ -11,26 +11,45 @@ const styles = StyleSheet.create({
 
 type FareResultsProps = ScreenNavigationProps<'FareResults'>;
 
+const DATA = [
+  {
+    journeyId: 'placeholderId1',
+    title: 'First Item',
+  },
+  {
+    journeyId: 'placeholderId2',
+    title: 'Second Item',
+  },
+  {
+    journeyId: 'placeholderId3',
+    title: 'Third Item',
+  },
+];
+
 const getTrainFares = async (departStation: string, arriveStation: string) => {
-  try {
-    const response = await fetch(
-      `${config.baseURL}/v1/fares?originStation=${departStation}&destinationStation=${arriveStation}&outboundDateTime=2022-07-14T12:16:27.371&numberOfChildren=0&numberOfAdults=1`,
-      {
-        method: 'GET',
-        headers: {
-          'x-api-key': config.apiKey,
-        },
+  const response: unknown = await fetch(
+    `${config.baseURL}/v1/fares?originStation=${departStation}&destinationStation=${arriveStation}&outboundDateTime=2022-07-14T12:16:27.371&numberOfChildren=0&numberOfAdults=1`,
+    {
+      method: 'GET',
+      headers: {
+        'x-api-key': config.apiKey,
       },
-    );
-    const json = await response.json();
-    return json.outboundJourneys;
-  } catch (error) {
-    console.error(error);
-  }
+    },
+  )
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data.outboundJourneys[0].departureTime);
+      console.log(data.outboundJourneys[0].destinationStation.displayName);
+      return data.outboundJourneys;
+    })
+
+    .catch((err) => console.error(err));
 };
 
 const FareResultsScreen: React.FC<FareResultsProps> = () => {
-  return <>{console.log(getTrainFares('EUS', 'CNL'))}</>;
+  return <></>;
 };
 
 export default FareResultsScreen;
