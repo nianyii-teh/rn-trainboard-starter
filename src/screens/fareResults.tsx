@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
 
 type FareResultsProps = ScreenNavigationProps<'FareResults'>;
 
-const getTrainFares = async (departStation: string | null, arriveStation: string | null): Promise<FareResponse> => {
-  console.log("HELLO");
+const getTrainFares = async (
+  departStation: string | null,
+  arriveStation: string | null,
+): Promise<FareResponse> => {
   const response: Response = await fetch(
     `${config.baseURL}/v1/fares?originStation=${departStation}&destinationStation=${arriveStation}&outboundDateTime=2022-07-14T12:16:27.371&numberOfChildren=0&numberOfAdults=1`,
     {
@@ -30,9 +32,7 @@ const getTrainFares = async (departStation: string | null, arriveStation: string
     },
   );
 
-  console.log("HI");
-
-  return await response.json() as FareResponse;
+  return (await response.json()) as FareResponse;
 };
 
 const FareResultsScreen: React.FC<FareResultsProps> = ({
@@ -46,22 +46,31 @@ const FareResultsScreen: React.FC<FareResultsProps> = ({
   //   2. Write the function that uses fetch to get the response using async/await syntax only, and make sure it returns a Promise<x> where x is your response model class
   //   3. Set up useEffect and useState in your component to make the API call and rerender once it's complete
   //   4. Add your flatlist component and make it only render once you've received the data
-  
-  const [fareResponseData, setFareResponseData] = useState<Journey[] | null>(null);
-  
+
+  const [fareResponseData, setFareResponseData] = useState<Journey[] | null>(
+    null,
+  );
+
   useEffect(() => {
-    async () => {
-      console.log("HIII");
-      const getTrainFaresResult = await getTrainFares(departStation, arriveStation);
+    const fetchData = async () => {
+      const getTrainFaresResult = await getTrainFares(
+        departStation,
+        arriveStation,
+      );
       setFareResponseData(getTrainFaresResult.outboundJourneys);
-      console.log(fareResponseData);
-    }
-  })
-  
+    };
+
+    fetchData().catch(console.error);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Stations</Text>
-      { fareResponseData ?  <FlatListComponent items={fareResponseData} />  : <Text>Loading...</Text>}
+      {fareResponseData ? (
+        <FlatListComponent items={fareResponseData} />
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </View>
   );
 };

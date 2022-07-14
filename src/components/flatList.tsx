@@ -12,12 +12,12 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 10,
+    marginVertical: 2,
+    marginHorizontal: 4,
   },
   title: {
-    fontSize: 32,
+    fontSize: 14,
   },
 });
 
@@ -25,42 +25,20 @@ type FlatListProps = {
   items: Journey[] | null;
 };
 
-// const TrainItem = (
-//   departStation: string,
-//   arriveStation: string,
-//   departureTime: Date,
-//   arriveTime: Date,
-// ) => {
-//   return (
-//     <View style={styles.item}>
-//       <Text style={styles.title}>{departStation}</Text>
-//       <Text style={styles.title}>{arriveStation}</Text>
-//       <Text style={styles.title}>{departureTime}</Text>
-//       <Text style={styles.title}>{arriveTime}</Text>
-//     </View>
-//   );
-// };
-
 const FlatListComponent: React.FC<FlatListProps> = ({ items }) => {
   const renderItem: ListRenderItem<Journey> = ({ item }) => {
     return (
-    //   <TrainItem
-    //     departStation={item.departStation}
-    //     arriveStation={item.arriveStation}
-    //     departureTime={item.departureTime}
-    //     arriveTime={item.arriveTime}
-    //   />
-    <View style={styles.item}>
-      <Text style={styles.title}>{item.originStation}</Text>
-      <Text style={styles.title}>{item.destinationStation}</Text>
-      <Text style={styles.title}>{item.departureTime}</Text>
-      <Text style={styles.title}>{item.arrivalTime}</Text>
-    </View>
+      <View style={styles.item}>
+        <Text style={styles.title}>{item.originStation.displayName}</Text>
+        <Text style={styles.title}>{item.destinationStation.displayName}</Text>
+        <Text style={styles.title}>{item.departureTime}</Text>
+        <Text style={styles.title}>{item.arrivalTime}</Text>
+      </View>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <FlatList
         data={items}
         renderItem={renderItem}
