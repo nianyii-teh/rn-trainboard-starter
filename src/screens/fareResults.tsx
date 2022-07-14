@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 type FareResultsProps = ScreenNavigationProps<'FareResults'>;
 
 const getTrainFares = async (
-  departStation: string | null,
-  arriveStation: string | null,
+  departStation: string,
+  arriveStation: string,
 ): Promise<FareResponse> => {
   const response: Response = await fetch(
     `${config.baseURL}/v1/fares?originStation=${departStation}&destinationStation=${arriveStation}&outboundDateTime=2022-07-14T12:16:27.371&numberOfChildren=0&numberOfAdults=1`,
@@ -34,10 +34,7 @@ const getTrainFares = async (
   return (await response.json()) as FareResponse;
 };
 
-const FareResultsScreen: React.FC<FareResultsProps> = ({
-  route,
-  navigation,
-}) => {
+const FareResultsScreen: React.FC<FareResultsProps> = ({ route }) => {
   const { departStation, arriveStation } = route.params;
 
   const [fareResponseData, setFareResponseData] = useState<Journey[] | null>(
@@ -45,16 +42,24 @@ const FareResultsScreen: React.FC<FareResultsProps> = ({
   );
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
       const getTrainFaresResult = await getTrainFares(
-        departStation,
-        arriveStation,
+        departStation as string,
+        arriveStation as string,
       );
-      setFareResponseData(getTrainFaresResult.outboundJourneys);
+
+      if (isMounted) {
+        setFareResponseData(getTrainFaresResult.outboundJourneys);
+      }
     };
 
     fetchData().catch(console.error);
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  });
 
   return (
     <View style={styles.container}>

@@ -85,7 +85,6 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         mode="contained"
         onPress={() => {
           if (stationSelectionIsValid(departStation, arriveStation)) {
-            // openUrlInBrowser(departStation, arriveStation);
             navigation.navigate('FareResults', {
               departStation: departStation,
               arriveStation: arriveStation,
