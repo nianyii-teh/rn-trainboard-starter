@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     alignItems: 'center',
   },
-  text: {
+  body: {
     padding: 16,
     fontSize: 18,
   },
@@ -59,7 +59,7 @@ const FareResultsScreen: React.FC<FareResultsProps> = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Journeys Available</Text>
+      <Text style={styles.body}>Journeys Available</Text>
       {fareResponseData ? (
         <FlatListComponent items={fareResponseData} />
       ) : (

@@ -1,14 +1,10 @@
 import React from 'react';
 import { ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native';
-import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { Journey } from '../model/fareResponseClass';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
   item: {
     backgroundColor: '#F2F2F2',
     padding: 10,

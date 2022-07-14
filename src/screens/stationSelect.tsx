@@ -11,16 +11,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     alignItems: 'center',
   },
-  dropdownContainer: {
-    flex: 1,
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    margin: 10,
-  },
   buttonContainer: {
     flex: 5,
   },
-  text: {
+  body: {
     padding: 16,
     fontSize: 18,
   },
@@ -82,7 +76,7 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Select Stations</Text>
+      <Text style={styles.body}>Select Stations</Text>
       <DropDownComponent
         items={stationList}
         label="Departure Station"
