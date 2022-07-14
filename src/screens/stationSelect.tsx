@@ -3,8 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
-import { DropdownItem } from '../dropDownTypes';
-import { openUrlInBrowser } from '../helpers/urlOpener';
+import { DropdownItem } from '../model/dropDownItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +21,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   text: {
-    paddingBottom: 24,
+    padding: 16,
+    fontSize: 18,
   },
 });
 
@@ -30,40 +30,54 @@ type StationSelectProps = ScreenNavigationProps<'StationSelect'>;
 
 const stationList: Array<DropdownItem> = [
   {
-    name: 'Kings Cross',
-    code: 'KGX',
+    label: 'Kings Cross',
+    value: 'KGX',
   },
   {
-    name: 'Euston',
-    code: 'EUS',
+    label: 'Euston',
+    value: 'EUS',
   },
   {
-    name: 'Canley',
-    code: 'CNL',
+    label: 'Canley',
+    value: 'CNL',
   },
   {
-    name: 'Newcastle',
-    code: 'NCL',
+    label: 'Newcastle',
+    value: 'NCL',
   },
   {
-    name: 'Orpington',
-    code: 'ORP',
+    label: 'Orpington',
+    value: 'ORP',
   },
 ];
 
-const StationSelectScreen: React.FC<StationSelectProps> = () => {
-  const [departStation, setDepartStation] = useState<string | null>(null);
-  const [arriveStation, setArriveStation] = useState<string | null>(null);
+const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
+  const [departStationCrsCode, setDepartStationCrsCode] = useState<
+    string | null
+  >(null);
+  const [arriveStationCrsCode, setArriveStationCrsCode] = useState<
+    string | null
+  >(null);
 
   const stationSelectionIsValid = (
-    departStation: string | null,
-    arriveStation: string | null,
-  ): boolean => {
-    return (
-      departStation !== null &&
-      arriveStation !== null &&
-      departStation !== arriveStation
-    );
+    departStationCrsCode: string,
+    arriveStationCrsCode: string,
+  ): boolean => departStationCrsCode !== arriveStationCrsCode;
+
+  const handleButtonTap = () => {
+    if (!departStationCrsCode || !arriveStationCrsCode) {
+      // TODO stretch goals: add some error messaging here
+      return;
+    }
+
+    if (stationSelectionIsValid(departStationCrsCode, arriveStationCrsCode)) {
+      navigation.navigate('FareResults', {
+        departStationCrsCode: departStationCrsCode,
+        arriveStationCrsCode: arriveStationCrsCode,
+      });
+    } else {
+      // TODO stretch goals: add some error messaging here
+    }
   };
 
   return (
@@ -72,23 +86,16 @@ const StationSelectScreen: React.FC<StationSelectProps> = () => {
       <DropDownComponent
         items={stationList}
         label="Departure Station"
-        value={departStation}
-        setValue={setDepartStation}
+        value={departStationCrsCode}
+        setValue={setDepartStationCrsCode}
       />
       <DropDownComponent
         items={stationList}
         label="Arrival Station"
-        value={arriveStation}
-        setValue={setArriveStation}
+        value={arriveStationCrsCode}
+        setValue={setArriveStationCrsCode}
       />
-      <Button
-        mode="contained"
-        onPress={() => {
-          if (stationSelectionIsValid(departStation, arriveStation)) {
-            openUrlInBrowser(departStation, arriveStation);
-          }
-        }}
-      >
+      <Button mode="contained" onPress={() => handleButtonTap()}>
         Submit
       </Button>
     </View>
