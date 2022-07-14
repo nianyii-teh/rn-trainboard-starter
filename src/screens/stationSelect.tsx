@@ -3,8 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
-import { DropdownItem } from '../dropDownTypes';
-import { openUrlInBrowser } from '../helpers/urlOpener';
+import { DropdownItem } from '../model/dropDownItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -22,7 +21,8 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   text: {
-    paddingBottom: 24,
+    padding: 16,
+    fontSize: 18,
   },
 });
 

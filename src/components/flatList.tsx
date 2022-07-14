@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native';
 import { Journey } from '../model/fareResponseClass';
-import { FlatListItem } from '../model/flatListItem';
 
 const styles = StyleSheet.create({
   container: {
