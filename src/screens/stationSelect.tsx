@@ -4,6 +4,7 @@ import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
 import { DropdownItem } from '../model/dropDownItem';
+import ErrorMessageComponent from '../components/errorMessage';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,6 +13,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
+    flex: 1,
+  },
+  errorMessageContainer: {
     flex: 5,
   },
   body: {
@@ -52,6 +56,8 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   const [arriveStationCrsCode, setArriveStationCrsCode] = useState<
     string | null
   >(null);
+  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const stationSelectionIsValid = (
     departStationCrsCode: string,
@@ -60,7 +66,8 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
 
   const handleButtonTap = () => {
     if (!departStationCrsCode || !arriveStationCrsCode) {
-      // TODO stretch goals: add some error messaging here
+      setShowErrorMessage(true);
+      setErrorMessage('Please select a departure and/or arrival station.');
       return;
     }
 
@@ -70,8 +77,11 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         arriveStationCrsCode: arriveStationCrsCode,
       });
     } else {
-      // TODO stretch goals: add some error messaging here
+      setShowErrorMessage(true);
+      setErrorMessage('The departure and arrival stations cannot be the same.');
+      return;
     }
+    setShowErrorMessage(false);
   };
 
   return (
@@ -93,6 +103,11 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         <Button mode="contained" onPress={() => handleButtonTap()}>
           View Journeys
         </Button>
+      </View>
+      <View style={styles.errorMessageContainer}>
+        {showErrorMessage && errorMessage !== null && (
+          <ErrorMessageComponent message={errorMessage}></ErrorMessageComponent>
+        )}
       </View>
     </View>
   );
