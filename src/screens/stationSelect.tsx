@@ -52,18 +52,32 @@ const stationList: Array<DropdownItem> = [
 ];
 
 const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
-  const [departStation, setDepartStation] = useState<string | null>(null);
-  const [arriveStation, setArriveStation] = useState<string | null>(null);
+  const [departStationCrsCode, setDepartStationCrsCode] = useState<
+    string | null
+  >(null);
+  const [arriveStationCrsCode, setArriveStationCrsCode] = useState<
+    string | null
+  >(null);
 
   const stationSelectionIsValid = (
-    departStation: string | null,
-    arriveStation: string | null,
-  ): boolean => {
-    return (
-      departStation !== null &&
-      arriveStation !== null &&
-      departStation !== arriveStation
-    );
+    departStationCrsCode: string,
+    arriveStationCrsCode: string,
+  ): boolean => departStationCrsCode !== arriveStationCrsCode;
+
+  const handleButtonTap = () => {
+    if (!departStationCrsCode || !arriveStationCrsCode) {
+      // TODO stretch goals: add some error messaging here
+      return;
+    }
+
+    if (stationSelectionIsValid(departStationCrsCode, arriveStationCrsCode)) {
+      navigation.navigate('FareResults', {
+        departStationCrsCode: departStationCrsCode,
+        arriveStationCrsCode: arriveStationCrsCode,
+      });
+    } else {
+      // TODO stretch goals: add some error messaging here
+    }
   };
 
   return (
@@ -72,26 +86,16 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
       <DropDownComponent
         items={stationList}
         label="Departure Station"
-        value={departStation}
-        setValue={setDepartStation}
+        value={departStationCrsCode}
+        setValue={setDepartStationCrsCode}
       />
       <DropDownComponent
         items={stationList}
         label="Arrival Station"
-        value={arriveStation}
-        setValue={setArriveStation}
+        value={arriveStationCrsCode}
+        setValue={setArriveStationCrsCode}
       />
-      <Button
-        mode="contained"
-        onPress={() => {
-          if (stationSelectionIsValid(departStation, arriveStation)) {
-            navigation.navigate('FareResults', {
-              departStation: departStation,
-              arriveStation: arriveStation,
-            });
-          }
-        }}
-      >
+      <Button mode="contained" onPress={() => handleButtonTap()}>
         Submit
       </Button>
     </View>

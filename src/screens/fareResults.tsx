@@ -5,6 +5,7 @@ import { config } from '../config';
 import FlatListComponent from '../components/flatList';
 import { useEffect } from 'react';
 import { FareResponse, Journey } from '../model/fareResponseClass';
+import { buildGetFaresApiString } from '../helpers/apiStringBuilder';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,11 +19,11 @@ const styles = StyleSheet.create({
 type FareResultsProps = ScreenNavigationProps<'FareResults'>;
 
 const getTrainFares = async (
-  departStation: string,
-  arriveStation: string,
+  departStationCrsCode: string,
+  arriveStationCrsCode: string,
 ): Promise<FareResponse> => {
   const response: Response = await fetch(
-    `${config.baseURL}/v1/fares?originStation=${departStation}&destinationStation=${arriveStation}&outboundDateTime=2022-07-14T12:16:27.371&numberOfChildren=0&numberOfAdults=1`,
+    buildGetFaresApiString(departStationCrsCode, arriveStationCrsCode),
     {
       method: 'GET',
       headers: {
@@ -35,31 +36,24 @@ const getTrainFares = async (
 };
 
 const FareResultsScreen: React.FC<FareResultsProps> = ({ route }) => {
-  const { departStation, arriveStation } = route.params;
+  const { departStationCrsCode, arriveStationCrsCode } = route.params;
 
   const [fareResponseData, setFareResponseData] = useState<Journey[] | null>(
     null,
   );
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchData = async () => {
       const getTrainFaresResult = await getTrainFares(
-        departStation as string,
-        arriveStation as string,
+        departStationCrsCode,
+        arriveStationCrsCode,
       );
 
-      if (isMounted) {
-        setFareResponseData(getTrainFaresResult.outboundJourneys);
-      }
+      setFareResponseData(getTrainFaresResult.outboundJourneys);
     };
 
     fetchData().catch(console.error);
-    return () => {
-      isMounted = false;
-    };
-  });
+  }, [departStationCrsCode, arriveStationCrsCode]);
 
   return (
     <View style={styles.container}>

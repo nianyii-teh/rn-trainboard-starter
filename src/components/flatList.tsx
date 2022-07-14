@@ -21,20 +21,18 @@ const styles = StyleSheet.create({
 });
 
 type FlatListProps = {
-  items: Journey[] | null;
+  items: Journey[];
 };
 
 const FlatListComponent: React.FC<FlatListProps> = ({ items }) => {
-  const renderItem: ListRenderItem<Journey> = ({ item }) => {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{item.originStation.displayName}</Text>
-        <Text style={styles.title}>{item.destinationStation.displayName}</Text>
-        <Text style={styles.title}>{item.departureTime}</Text>
-        <Text style={styles.title}>{item.arrivalTime}</Text>
-      </View>
-    );
-  };
+  const renderItem: ListRenderItem<Journey> = ({ item }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{item.originStation.displayName}</Text>
+      <Text style={styles.title}>{item.destinationStation.displayName}</Text>
+      <Text style={styles.title}>{item.departureTime}</Text>
+      <Text style={styles.title}>{item.arrivalTime}</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView>

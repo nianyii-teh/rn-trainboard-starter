@@ -1,9 +1,9 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
-type FareResultsParam = {
-  departStation: string | null;
-  arriveStation: string | null;
+type FareResultsParams = {
+  departStationCrsCode: string;
+  arriveStationCrsCode: string;
 };
 
 export type ScreenNavigationProps<T extends keyof RootStackParamList> = {
@@ -13,7 +13,6 @@ export type ScreenNavigationProps<T extends keyof RootStackParamList> = {
 
 export type RootStackParamList = {
   Home: undefined;
-  Details: undefined;
   StationSelect: undefined;
-  FareResults: FareResultsParam;
+  FareResults: FareResultsParams;
 };
