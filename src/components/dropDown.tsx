@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
   },
-  spacerStyle: {
-    marginBottom: 15,
-  },
   safeContainerStyle: {
     flex: 1,
     margin: 10,

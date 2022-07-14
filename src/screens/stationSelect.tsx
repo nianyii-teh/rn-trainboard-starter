@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
   },
-  dropdown: {
-    margin: 5,
+  buttonContainer: {
+    flex: 5,
   },
   text: {
     padding: 16,
@@ -95,9 +95,11 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         value={arriveStationCrsCode}
         setValue={setArriveStationCrsCode}
       />
-      <Button mode="contained" onPress={() => handleButtonTap()}>
-        Submit
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button mode="contained" onPress={() => handleButtonTap()}>
+          View Journeys
+        </Button>
+      </View>
     </View>
   );
 };

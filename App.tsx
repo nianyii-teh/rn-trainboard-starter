@@ -19,7 +19,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 enum Routes {
   HOME = 'Home',
-  DETAILS = 'Details',
   STATION_SELECT = 'StationSelect',
   FARE_RESULTS = 'FareResults',
 }
