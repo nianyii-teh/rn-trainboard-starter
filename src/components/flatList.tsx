@@ -1,22 +1,29 @@
 import React from 'react';
 import { ListRenderItem } from 'react-native';
 import { SafeAreaView } from 'react-native';
-import { StyleSheet, View, FlatList, Text, StatusBar } from 'react-native';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { Journey } from '../model/fareResponseClass';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#F2F2F2',
     padding: 10,
-    marginVertical: 2,
-    marginHorizontal: 4,
+    marginVertical: 8,
+    marginHorizontal: 10,
+    minWidth: '90%',
   },
-  title: {
+  body: {
     fontSize: 14,
+    color: '#000',
+  },
+  heading: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
+  },
+  columnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
@@ -24,13 +31,45 @@ type FlatListProps = {
   items: Journey[];
 };
 
+const convertIsoDateTimeToFormattedDate = (isoDateString: string): string => {
+  const isoDate: Date = new Date(isoDateString);
+  const date: string = isoDate.toDateString();
+
+  return date;
+};
+
+const convertIsoDateTimeToFormattedTime = (isoDateString: string): string => {
+  const isoDate: Date = new Date(isoDateString);
+  const hour: number = isoDate.getHours();
+  const minute: number = isoDate.getMinutes();
+  const dateString = `${hour}:${minute}`;
+
+  return dateString;
+};
+
 const FlatListComponent: React.FC<FlatListProps> = ({ items }) => {
   const renderItem: ListRenderItem<Journey> = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.title}>{item.originStation.displayName}</Text>
-      <Text style={styles.title}>{item.destinationStation.displayName}</Text>
-      <Text style={styles.title}>{item.departureTime}</Text>
-      <Text style={styles.title}>{item.arrivalTime}</Text>
+      <View>
+        <Text>{convertIsoDateTimeToFormattedDate(item.departureTime)}</Text>
+      </View>
+      <View style={styles.columnContainer}>
+        <View>
+          <Text style={styles.heading}>
+            {convertIsoDateTimeToFormattedTime(item.departureTime)}
+          </Text>
+          <Text style={styles.body}>{item.originStation.displayName}</Text>
+        </View>
+        <View>
+          <Text style={styles.heading}>{'\u2192'}</Text>
+        </View>
+        <View>
+          <Text style={styles.heading}>
+            {convertIsoDateTimeToFormattedTime(item.arrivalTime)}
+          </Text>
+          <Text style={styles.body}>{item.destinationStation.displayName}</Text>
+        </View>
+      </View>
     </View>
   );
 

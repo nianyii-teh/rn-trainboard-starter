@@ -10,9 +10,11 @@ import { buildGetFaresApiString } from '../helpers/apiStringBuilder';
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eee',
+    alignItems: 'center',
   },
-  text: {
-    paddingBottom: 24,
+  body: {
+    padding: 16,
+    fontSize: 18,
   },
 });
 
@@ -57,9 +59,13 @@ const FareResultsScreen: React.FC<FareResultsProps> = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Select Stations</Text>
+      <Text style={styles.body}>Journeys Available</Text>
       {fareResponseData ? (
-        <FlatListComponent items={fareResponseData} />
+        fareResponseData.length === 0 ? (
+          <Text>No journeys available</Text>
+        ) : (
+          <FlatListComponent items={fareResponseData} />
+        )
       ) : (
         <Text>Loading...</Text>
       )}

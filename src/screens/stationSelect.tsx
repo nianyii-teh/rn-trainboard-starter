@@ -4,6 +4,7 @@ import { Text, Button } from 'react-native-paper';
 import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
 import { DropdownItem } from '../model/dropDownItem';
+import ErrorMessageComponent from '../components/errorMessage';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,16 +12,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     alignItems: 'center',
   },
-  dropdownContainer: {
+  buttonContainer: {
     flex: 1,
-    backgroundColor: '#eee',
-    alignItems: 'center',
-    margin: 10,
   },
-  dropdown: {
-    margin: 5,
+  errorMessageContainer: {
+    flex: 5,
   },
-  text: {
+  body: {
     padding: 16,
     fontSize: 18,
   },
@@ -49,6 +47,14 @@ const stationList: Array<DropdownItem> = [
     label: 'Orpington',
     value: 'ORP',
   },
+  {
+    label: 'Weymouth',
+    value: 'WEY',
+  },
+  {
+    label: 'Bridlington',
+    value: 'BDT',
+  },
 ];
 
 const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
@@ -58,6 +64,7 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   const [arriveStationCrsCode, setArriveStationCrsCode] = useState<
     string | null
   >(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const stationSelectionIsValid = (
     departStationCrsCode: string,
@@ -66,23 +73,25 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
 
   const handleButtonTap = () => {
     if (!departStationCrsCode || !arriveStationCrsCode) {
-      // TODO stretch goals: add some error messaging here
+      setErrorMessage('Please select a departure and/or arrival station.');
       return;
     }
 
     if (stationSelectionIsValid(departStationCrsCode, arriveStationCrsCode)) {
+      setErrorMessage(null);
       navigation.navigate('FareResults', {
         departStationCrsCode: departStationCrsCode,
         arriveStationCrsCode: arriveStationCrsCode,
       });
     } else {
-      // TODO stretch goals: add some error messaging here
+      setErrorMessage('The departure and arrival stations cannot be the same.');
+      return;
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Select Stations</Text>
+      <Text style={styles.body}>Select Stations</Text>
       <DropDownComponent
         items={stationList}
         label="Departure Station"
@@ -95,9 +104,16 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         value={arriveStationCrsCode}
         setValue={setArriveStationCrsCode}
       />
-      <Button mode="contained" onPress={() => handleButtonTap()}>
-        Submit
-      </Button>
+      <View style={styles.buttonContainer}>
+        <Button mode="contained" onPress={() => handleButtonTap()}>
+          View Journeys
+        </Button>
+      </View>
+      <View style={styles.errorMessageContainer}>
+        {errorMessage !== null && (
+          <ErrorMessageComponent message={errorMessage}></ErrorMessageComponent>
+        )}
+      </View>
     </View>
   );
 };
