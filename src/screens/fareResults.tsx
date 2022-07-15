@@ -61,7 +61,11 @@ const FareResultsScreen: React.FC<FareResultsProps> = ({ route }) => {
     <View style={styles.container}>
       <Text style={styles.body}>Journeys Available</Text>
       {fareResponseData ? (
-        <FlatListComponent items={fareResponseData} />
+        fareResponseData.length === 0 ? (
+          <Text>No journeys available</Text>
+        ) : (
+          <FlatListComponent items={fareResponseData} />
+        )
       ) : (
         <Text>Loading...</Text>
       )}

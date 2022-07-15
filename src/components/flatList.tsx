@@ -31,14 +31,14 @@ type FlatListProps = {
   items: Journey[];
 };
 
-const convertDateString = (isoDateString: string): string => {
+const convertIsoDateTimeToFormattedDate = (isoDateString: string): string => {
   const isoDate: Date = new Date(isoDateString);
   const date: string = isoDate.toDateString();
 
   return date;
 };
 
-const convertTimeString = (isoDateString: string): string => {
+const convertIsoDateTimeToFormattedTime = (isoDateString: string): string => {
   const isoDate: Date = new Date(isoDateString);
   const hour: number = isoDate.getHours();
   const minute: number = isoDate.getMinutes();
@@ -51,21 +51,21 @@ const FlatListComponent: React.FC<FlatListProps> = ({ items }) => {
   const renderItem: ListRenderItem<Journey> = ({ item }) => (
     <View style={styles.item}>
       <View>
-        <Text>{convertDateString(item.departureTime)}</Text>
+        <Text>{convertIsoDateTimeToFormattedDate(item.departureTime)}</Text>
       </View>
       <View style={styles.columnContainer}>
         <View>
           <Text style={styles.heading}>
-            {convertTimeString(item.departureTime)}
+            {convertIsoDateTimeToFormattedTime(item.departureTime)}
           </Text>
           <Text style={styles.body}>{item.originStation.displayName}</Text>
         </View>
         <View>
-          <Text style={styles.heading}>→</Text>
+          <Text style={styles.heading}>{'\u2192'}</Text>
         </View>
         <View>
           <Text style={styles.heading}>
-            {convertTimeString(item.arrivalTime)}
+            {convertIsoDateTimeToFormattedTime(item.arrivalTime)}
           </Text>
           <Text style={styles.body}>{item.destinationStation.displayName}</Text>
         </View>

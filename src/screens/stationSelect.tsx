@@ -47,6 +47,14 @@ const stationList: Array<DropdownItem> = [
     label: 'Orpington',
     value: 'ORP',
   },
+  {
+    label: 'Weymouth',
+    value: 'WEY',
+  },
+  {
+    label: 'Bridlington',
+    value: 'BDT',
+  },
 ];
 
 const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
@@ -56,7 +64,6 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   const [arriveStationCrsCode, setArriveStationCrsCode] = useState<
     string | null
   >(null);
-  const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const stationSelectionIsValid = (
@@ -66,22 +73,20 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
 
   const handleButtonTap = () => {
     if (!departStationCrsCode || !arriveStationCrsCode) {
-      setShowErrorMessage(true);
       setErrorMessage('Please select a departure and/or arrival station.');
       return;
     }
 
     if (stationSelectionIsValid(departStationCrsCode, arriveStationCrsCode)) {
+      setErrorMessage(null);
       navigation.navigate('FareResults', {
         departStationCrsCode: departStationCrsCode,
         arriveStationCrsCode: arriveStationCrsCode,
       });
     } else {
-      setShowErrorMessage(true);
       setErrorMessage('The departure and arrival stations cannot be the same.');
       return;
     }
-    setShowErrorMessage(false);
   };
 
   return (
@@ -105,7 +110,7 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
         </Button>
       </View>
       <View style={styles.errorMessageContainer}>
-        {showErrorMessage && errorMessage !== null && (
+        {errorMessage !== null && (
           <ErrorMessageComponent message={errorMessage}></ErrorMessageComponent>
         )}
       </View>
