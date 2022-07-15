@@ -5,6 +5,10 @@ import DropDownComponent from '../components/dropDown';
 import { ScreenNavigationProps } from '../routes';
 import { DropdownItem } from '../model/dropDownItem';
 import ErrorMessageComponent from '../components/errorMessage';
+import { StationNameResponse, Station } from '../model/stationNameList';
+import { config } from '../config';
+import { useEffect } from 'react';
+import { mapStationDataToDropdownItem } from '../helpers/stationDataToDropdownItemMapper';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,36 +30,16 @@ const styles = StyleSheet.create({
 
 type StationSelectProps = ScreenNavigationProps<'StationSelect'>;
 
-const stationList: Array<DropdownItem> = [
-  {
-    label: 'Kings Cross',
-    value: 'KGX',
-  },
-  {
-    label: 'Euston',
-    value: 'EUS',
-  },
-  {
-    label: 'Canley',
-    value: 'CNL',
-  },
-  {
-    label: 'Newcastle',
-    value: 'NCL',
-  },
-  {
-    label: 'Orpington',
-    value: 'ORP',
-  },
-  {
-    label: 'Weymouth',
-    value: 'WEY',
-  },
-  {
-    label: 'Bridlington',
-    value: 'BDT',
-  },
-];
+const getStationNames = async (): Promise<StationNameResponse> => {
+  const response: Response = await fetch(`${config.baseURL}/v1/stations`, {
+    method: 'GET',
+    headers: {
+      'x-api-key': config.apiKey,
+    },
+  });
+
+  return (await response.json()) as StationNameResponse;
+};
 
 const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   const [departStationCrsCode, setDepartStationCrsCode] = useState<
@@ -65,6 +49,18 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
     string | null
   >(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [stationList, setStationList] = useState<DropdownItem[] | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const getStationNamesResult = await getStationNames();
+      setStationList(
+        mapStationDataToDropdownItem(getStationNamesResult.stations),
+      );
+    };
+
+    fetchData().catch(console.error);
+  }, []);
 
   const stationSelectionIsValid = (
     departStationCrsCode: string,
@@ -92,18 +88,25 @@ const StationSelectScreen: React.FC<StationSelectProps> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.body}>Select Stations</Text>
-      <DropDownComponent
-        items={stationList}
-        label="Departure Station"
-        value={departStationCrsCode}
-        setValue={setDepartStationCrsCode}
-      />
-      <DropDownComponent
-        items={stationList}
-        label="Arrival Station"
-        value={arriveStationCrsCode}
-        setValue={setArriveStationCrsCode}
-      />
+      {stationList ? (
+        <>
+          <DropDownComponent
+            items={stationList}
+            label="Departure Station"
+            value={departStationCrsCode}
+            setValue={setDepartStationCrsCode}
+          />
+          <DropDownComponent
+            items={stationList}
+            label="Arrival Station"
+            value={arriveStationCrsCode}
+            setValue={setArriveStationCrsCode}
+          />
+        </>
+      ) : (
+        <Text>Waiting for stations</Text>
+      )}
+
       <View style={styles.buttonContainer}>
         <Button mode="contained" onPress={() => handleButtonTap()}>
           View Journeys
